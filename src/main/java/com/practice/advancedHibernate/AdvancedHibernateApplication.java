@@ -23,9 +23,16 @@ public class AdvancedHibernateApplication {
 //			createInstructor(appDao);
 //			findInstructor(appDao);
 //			deleteInstructorById(appDao);
+//			findInstructorDetailById(appDao);
 
-			findInstructorDetailById(appDao);
+			deleteInstructorDetailById(appDao);
 		};
+	}
+
+	private void deleteInstructorDetailById(AppDAO appDao) {
+		int id = 2;
+		appDao.deleteInstructorDetailById(id);
+		System.out.println("InstructorDetail of given id is deleted");
 	}
 
 	private void findInstructorDetailById(AppDAO appDao) {
