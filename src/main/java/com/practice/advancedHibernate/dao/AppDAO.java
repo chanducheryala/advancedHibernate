@@ -9,6 +9,8 @@ import java.util.List;
 public interface AppDAO {
     void save(Instructor theInstructor);
 
+    void save(Course course);
+
     Instructor findInstructorById(int id);
 
     void deleteById(int id);
@@ -20,4 +22,10 @@ public interface AppDAO {
     List<Course> findCoursesByInstructorId(int id);
 
     Instructor findInstructorByIdJoinFetch(int id);
+
+    void update(Instructor theInstructor);
+
+    void deleteInstructorById(int id);
+
+    Course findCourseAndReviewByCourseId(int id);
 }

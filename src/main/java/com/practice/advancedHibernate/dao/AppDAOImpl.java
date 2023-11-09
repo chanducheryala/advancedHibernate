@@ -31,6 +31,12 @@ public class AppDAOImpl implements AppDAO {
     }
 
     @Override
+    @Transactional
+    public void save(Course course) {
+        entityManager.persist(course);
+    }
+
+    @Override
     public Instructor findInstructorById(int id) {
         // It will also fetch the Instructor Detail because the Default behaviour(One to One) of the fetch type is eager
         return entityManager.find(Instructor.class, id);
@@ -68,5 +74,38 @@ public class AppDAOImpl implements AppDAO {
         TypedQuery<Instructor> query = entityManager.createQuery("select i from Instructor i " + "JOIN FETCH i.courses " + "where i.id = :data", Instructor.class);
         query.setParameter("data", id);
         return query.getSingleResult();
+    }
+
+    @Override
+    @Transactional
+    public void update(Instructor theInstructor) {
+        entityManager.merge(theInstructor);
+    }
+
+    @Override
+    @Transactional
+    public void deleteInstructorById(int id) {
+        Instructor instructor = entityManager.find(Instructor.class, id);
+
+        // break or de-reference the courses associated with Instructor
+        // without de-reference it will throw an error, due to foreign key
+        for(Course course : instructor.getCourses()){
+            course.setInstructor(null);
+        }
+        entityManager.remove(instructor);
+    }
+
+    @Override
+    public Course findCourseAndReviewByCourseId(int id) {
+
+        TypedQuery<Course> query = entityManager.createQuery(
+                "select c from Course c "
+                + "JOIN FETCH c.reviews "
+                + "where c.id = :data", Course.class
+        );
+        query.setParameter("data", id);
+
+        Course course = query.getSingleResult();
+        return course;
     }
 }

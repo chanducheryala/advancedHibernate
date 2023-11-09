@@ -4,6 +4,7 @@ import com.practice.advancedHibernate.dao.AppDAO;
 import com.practice.advancedHibernate.entity.Course;
 import com.practice.advancedHibernate.entity.Instructor;
 import com.practice.advancedHibernate.entity.InstructorDetail;
+import com.practice.advancedHibernate.entity.Review;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -30,9 +31,43 @@ public class AdvancedHibernateApplication {
 //			deleteInstructorDetailById(appDao);
 //			createInstructorWithCourses(appDao);
 //			findInstructorWithCourses(appDao);
+//			findInstructorWithCoursesJoinFetch(appDao);
+//			updateInstructor(appDao);
+//			deleteInstructorById(appDao);
+//			createCourseAndReviews(appDao);
 
-			findInstructorWithCoursesJoinFetch(appDao);
+			retrieveCoursesAndReviews(appDao);
 		};
+	}
+
+	private void retrieveCoursesAndReviews(AppDAO appDao) {
+
+		int id = 10;
+		// get the course and reviews
+		Course course = appDao.findCourseAndReviewByCourseId(id);
+
+		// print the course
+		System.out.println("The course : " + course);
+
+		// print the reviews
+		System.out.println("The reviews : " + course.getReviews());
+	}
+
+	private void createCourseAndReviews(AppDAO appDao) {
+		Course tempCourse = new Course("The little Bird");
+
+		tempCourse.addReview(new Review("Great Course 1"));
+		tempCourse.addReview(new Review("Great Course 2"));
+		tempCourse.addReview(new Review("Great Course 3"));
+
+		appDao.save(tempCourse);
+	}
+
+	private void updateInstructor(AppDAO appDao) {
+		int id = 1;
+		Instructor instructor = appDao.findInstructorById(id);
+		instructor.setLastName("Chintu");
+		appDao.update(instructor);
 	}
 
 	private void findInstructorWithCoursesJoinFetch(AppDAO appDao) {
@@ -90,7 +125,7 @@ public class AdvancedHibernateApplication {
 	}
 
 	private void deleteInstructorById(AppDAO appDao) {
-		int id = 2;
+		int id = 1;
 		appDao.deleteById(id);
 	}
 
