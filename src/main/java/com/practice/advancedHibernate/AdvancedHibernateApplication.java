@@ -1,6 +1,7 @@
 package com.practice.advancedHibernate;
 
 import com.practice.advancedHibernate.dao.AppDAO;
+import com.practice.advancedHibernate.entity.Course;
 import com.practice.advancedHibernate.entity.Instructor;
 import com.practice.advancedHibernate.entity.InstructorDetail;
 import org.springframework.boot.CommandLineRunner;
@@ -24,9 +25,31 @@ public class AdvancedHibernateApplication {
 //			findInstructor(appDao);
 //			deleteInstructorById(appDao);
 //			findInstructorDetailById(appDao);
+//			deleteInstructorDetailById(appDao);
 
-			deleteInstructorDetailById(appDao);
+			createInstructorWithCourses(appDao);
 		};
+	}
+
+	private void createInstructorWithCourses(AppDAO appDao) {
+		Instructor tempInstructor = new Instructor("ch", "bhanu", "abc@gmail.com");
+		InstructorDetail tempInstructorDetail = new InstructorDetail("http://fb.com", "Cricket");
+		tempInstructor.setInstructorDetail(tempInstructorDetail);
+
+		Course tempCourse1 = new Course("Happy days");
+		Course tempCourse2 = new Course("The Life");
+
+
+		// add courses to the instructor
+		tempInstructor.addCourse(tempCourse1);
+		tempInstructor.addCourse(tempCourse2);
+
+		// save the instructor
+		System.out.println("Saving the instructor " + tempInstructor);
+		System.out.println("The Courses : " + tempInstructor.getCourses());
+		appDao.save(tempInstructor);
+
+		System.out.println("Done");
 	}
 
 	private void deleteInstructorDetailById(AppDAO appDao) {

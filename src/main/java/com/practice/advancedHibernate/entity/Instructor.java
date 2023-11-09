@@ -2,25 +2,30 @@ package com.practice.advancedHibernate.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
-@Table(name="instructor")
+@Table(name = "instructor")
 public class Instructor {
 
     // setup the mapping or relationship between Instructor and Instructor_detail
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
     private int id;
 
-    @Column(name="first_name")
+    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name="last_name")
+    @Column(name = "last_name")
     private String lastName;
 
-    @Column(name="email")
+    @Column(name = "email")
     private String email;
 
+    @OneToMany(mappedBy = "theInstructor", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    private List<Course> courses;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "instructor_detail_id")
@@ -28,11 +33,13 @@ public class Instructor {
 
     public Instructor() {
     }
+
     public Instructor(String firstName, String lastName, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
     }
+
     public int getId() {
         return id;
     }
@@ -73,6 +80,26 @@ public class Instructor {
         this.instructorDetail = instructorDetail;
     }
 
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
+
+    // add convenience methods for bi-directional relationship
+
+    public void addCourse(Course tempCourse) {
+        if(courses == null) {
+            courses = new ArrayList<>();
+        }
+
+        courses.add(tempCourse);
+
+        // setting the particular course Instructor using "this"
+        tempCourse.setInstructor(this);
+    }
     @Override
     public String toString() {
         return "Instructor{" +
