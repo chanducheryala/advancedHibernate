@@ -9,6 +9,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.List;
+
 @SpringBootApplication
 public class AdvancedHibernateApplication {
 
@@ -26,9 +28,30 @@ public class AdvancedHibernateApplication {
 //			deleteInstructorById(appDao);
 //			findInstructorDetailById(appDao);
 //			deleteInstructorDetailById(appDao);
+//			createInstructorWithCourses(appDao);
+//			findInstructorWithCourses(appDao);
 
-			createInstructorWithCourses(appDao);
+			findInstructorWithCoursesJoinFetch(appDao);
 		};
+	}
+
+	private void findInstructorWithCoursesJoinFetch(AppDAO appDao) {
+		int id = 1;
+		Instructor instructor = appDao.findInstructorByIdJoinFetch(id);
+		System.out.println("The instructor : " + instructor);
+		System.out.println("The associated Courses : " + instructor.getCourses());
+	}
+
+	private void findInstructorWithCourses(AppDAO appDao) {
+		int id = 1;
+
+		Instructor theInstructor = appDao.findInstructorById(id);
+		System.out.println("Instructor : " + theInstructor);
+
+		List<Course> courses = appDao.findCoursesByInstructorId(id);
+		theInstructor.setCourses(courses);
+		System.out.println("The associated courses : " + theInstructor.getCourses());
+		System.out.println("Done");
 	}
 
 	private void createInstructorWithCourses(AppDAO appDao) {

@@ -24,7 +24,7 @@ public class Instructor {
     @Column(name = "email")
     private String email;
 
-    @OneToMany(mappedBy = "theInstructor", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "theInstructor", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     private List<Course> courses;
 
     @OneToOne(cascade = CascadeType.ALL)
