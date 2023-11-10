@@ -22,9 +22,35 @@ public class AdvancedHibernateApplication {
 		return runner -> {
 //			createCourseAndStudents(appDao);
 //			findCourseAndStudents(appDao);
+//			findStudentAndCourses(appDao);
+//			addMoreCoursesForStudent(appDao);
+//			deleteCouse(appDao);
 
-			findStudentAndCourses(appDao);
+			deleteStudentById(appDao);
 		};
+	}
+
+	private void deleteStudentById(AppDAO appDao) {
+		int id = 3;
+		appDao.deleteStudentById(id);
+		System.out.println("The student is successfully deleted");
+	}
+
+	private void deleteCouse(AppDAO appDao) {
+
+	}
+
+	private void addMoreCoursesForStudent(AppDAO appDao) {
+		int id = 1;
+		Student student = appDao.findStudentAndCoursesByStudentId(id);
+
+		Course course1 = new Course("The Monster");
+		Course course2 = new Course("Harry potter");
+
+		student.addCourse(course1);
+		student.addCourse(course2);
+
+		appDao.update(student);
 	}
 
 	private void findStudentAndCourses(AppDAO appDao) {
