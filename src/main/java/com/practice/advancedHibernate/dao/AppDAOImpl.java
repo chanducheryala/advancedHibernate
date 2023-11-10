@@ -3,6 +3,7 @@ package com.practice.advancedHibernate.dao;
 import com.practice.advancedHibernate.entity.Course;
 import com.practice.advancedHibernate.entity.Instructor;
 import com.practice.advancedHibernate.entity.InstructorDetail;
+import com.practice.advancedHibernate.entity.Student;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,5 +108,27 @@ public class AppDAOImpl implements AppDAO {
 
         Course course = query.getSingleResult();
         return course;
+    }
+
+    @Override
+    public Course findCourseAndStudentsByCourseId(int id) {
+        TypedQuery<Course> query = entityManager.createQuery(
+                "select c from Course c "
+                + "JOIN FETCH c.students "
+                + "where c.id = :data", Course.class
+        );
+        query.setParameter("data", id);
+        return query.getSingleResult();
+    }
+
+    @Override
+    public Student findStudentAndCoursesByStudentId(int id) {
+        TypedQuery<Student> query = entityManager.createQuery(
+          "select s from Student s "
+          + "JOIN FETCH s.courses "
+          +"where s.id = :data", Student.class
+        );
+        query.setParameter("data", id);
+        return query.getSingleResult();
     }
 }

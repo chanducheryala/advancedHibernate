@@ -1,10 +1,7 @@
 package com.practice.advancedHibernate;
 
 import com.practice.advancedHibernate.dao.AppDAO;
-import com.practice.advancedHibernate.entity.Course;
-import com.practice.advancedHibernate.entity.Instructor;
-import com.practice.advancedHibernate.entity.InstructorDetail;
-import com.practice.advancedHibernate.entity.Review;
+import com.practice.advancedHibernate.entity.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,7 +11,6 @@ import java.util.List;
 
 @SpringBootApplication
 public class AdvancedHibernateApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(AdvancedHibernateApplication.class, args);
 	}
@@ -24,20 +20,45 @@ public class AdvancedHibernateApplication {
 	@Bean
 	public CommandLineRunner commandLineRunner(AppDAO appDao) {
 		return runner -> {
-//			createInstructor(appDao);
-//			findInstructor(appDao);
-//			deleteInstructorById(appDao);
-//			findInstructorDetailById(appDao);
-//			deleteInstructorDetailById(appDao);
-//			createInstructorWithCourses(appDao);
-//			findInstructorWithCourses(appDao);
-//			findInstructorWithCoursesJoinFetch(appDao);
-//			updateInstructor(appDao);
-//			deleteInstructorById(appDao);
-//			createCourseAndReviews(appDao);
+//			createCourseAndStudents(appDao);
+//			findCourseAndStudents(appDao);
 
-			retrieveCoursesAndReviews(appDao);
+			findStudentAndCourses(appDao);
 		};
+	}
+
+	private void findStudentAndCourses(AppDAO appDao) {
+		int id = 1;
+		Student student = appDao.findStudentAndCoursesByStudentId(id);
+		System.out.println("The student : " + student);
+		System.out.println("The associated courses : " + student.getCourses());
+	}
+
+	private void findCourseAndStudents(AppDAO appDao) {
+		int id = 10;
+		Course theCourse = appDao.findCourseAndStudentsByCourseId(id);
+		System.out.println("The Course : " + theCourse);
+		System.out.println("The associated students : " + theCourse.getStudents());
+	}
+
+	private void createCourseAndStudents(AppDAO appDao) {
+		// create a course
+
+		Course theCourse = new Course("The Mighty Eagle");
+
+		// create students
+		Student student1 = new Student("ch", "chintu", "abc@gmail.com");
+		Student student2 = new Student("ch", "chintu2", "abc@gmail.com");
+		Student student3 = new Student("ch", "chintu3", "abc@gmail.com");
+
+		// add students to course
+		theCourse.addStudent(student1);
+		theCourse.addStudent(student2);
+		theCourse.addStudent(student3);
+
+		// save course and associated students
+
+		appDao.save(theCourse);
 	}
 
 	private void retrieveCoursesAndReviews(AppDAO appDao) {
@@ -154,3 +175,16 @@ public class AdvancedHibernateApplication {
 		// Note it will also save the Instructor Detail object by simply saving the Instructor object
 	}
 }
+
+//			createInstructor(appDao);
+//			findInstructor(appDao);
+//			deleteInstructorById(appDao);
+//			findInstructorDetailById(appDao);
+//			deleteInstructorDetailById(appDao);
+//			createInstructorWithCourses(appDao);
+//			findInstructorWithCourses(appDao);
+//			findInstructorWithCoursesJoinFetch(appDao);
+//			updateInstructor(appDao);
+//			deleteInstructorById(appDao);
+//			createCourseAndReviews(appDao);
+//			retrieveCoursesAndReviews(appDao);

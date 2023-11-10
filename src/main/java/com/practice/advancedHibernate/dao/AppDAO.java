@@ -3,6 +3,7 @@ package com.practice.advancedHibernate.dao;
 import com.practice.advancedHibernate.entity.Course;
 import com.practice.advancedHibernate.entity.Instructor;
 import com.practice.advancedHibernate.entity.InstructorDetail;
+import com.practice.advancedHibernate.entity.Student;
 
 import java.util.List;
 
@@ -28,4 +29,8 @@ public interface AppDAO {
     void deleteInstructorById(int id);
 
     Course findCourseAndReviewByCourseId(int id);
+
+    Course findCourseAndStudentsByCourseId(int id);
+
+    Student findStudentAndCoursesByStudentId(int id);
 }
